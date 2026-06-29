@@ -3,6 +3,18 @@ from functools import lru_cache
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from dotenv import dotenv_values
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+
+print(dotenv_values(BASE_DIR / ".env"))
+
+from pathlib import Path
+
+
+
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 class Settings(BaseSettings):
 
@@ -20,12 +32,13 @@ class Settings(BaseSettings):
 
     debug: bool = False
 
+    log_level: str = Field(default="INFO")
+
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=BASE_DIR / ".env",
         case_sensitive=False,
         extra="ignore"
     )
-
 
 @lru_cache
 def get_settings() -> Settings:
